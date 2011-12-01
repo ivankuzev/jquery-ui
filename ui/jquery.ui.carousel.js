@@ -15,7 +15,7 @@
             step:3,
             animation:{
                 easing:'swing',
-                speed:'show'
+                speed:'slow'
             },   
             icons:{
                 up: 'ui-icon-circle-triangle-n',
@@ -23,9 +23,7 @@
                 left: 'ui-icon-circle-triangle-w',
                 right: 'ui-icon-circle-triangle-e' 
             },
-            //shoud it apply ui-corner-* classes to caps or items
-            roundedCaps:true,
-            //active state
+           //active state
             activeItem:null,
             focusItem:0,
             //callbacks
@@ -114,17 +112,24 @@
                 // adding top/left cap
                 if(this.element.children('.ui-carousel-cap-1').length== 0){
                     //apply rounded corners 
+                    var icon;
                     if(this.options.orientation === 'vertical'){
                         //todo icons
-                        this.element.prepend($('<li>').addClass('ui-carousel-cap-1 '+this.options.classCaps +' ' +this.options.classDefault).append($('<span class="ui-icon '+this.options.icons.up +'"">')));   
-                        if(this.options.roundedCaps) this.element.children('li.ui-carousel-cap-1').addClass('ui-corner-top');
-
+                        if(typeof(this.options.icons.up) === 'string'){
+                            icon = $('<span class="ui-icon '+this.options.icons.up +'">');
+                        }else{
+                            icon = this.options.icons.up; 
+                        }
                     }else if(this.options.orientation === 'horizontal'){
                         //todo icons
-                        this.element.prepend($('<li>').addClass('ui-carousel-cap-1 '+this.options.classCaps +' ' +this.options.classDefault).append($('<span class="ui-icon '+this.options.icons.left +'"">')));   
-                        if(this.options.roundedCaps) this.element.children('li.ui-carousel-cap-1').addClass('ui-corner-left');
-
+                        if(typeof(this.options.icons.left) === 'string'){
+                            icon = $('<span class="ui-icon '+this.options.icons.left +'">');
+                        }else{
+                            icon = this.options.icons.left; 
+                        }
                     }
+                    this.element.prepend($('<li>').addClass('ui-carousel-cap-1 '+this.options.classCaps +' ' +this.options.classDefault).append(icon));   
+
                     // adding hover handler to cap
                     this.element.children('li.ui-carousel-cap-1').hover(  $.proxy(function(eventobject){
 
@@ -137,16 +142,24 @@
                 // adding bottom/right cap
                 if(this.element.children('.ui-carousel-cap-2').length== 0){
                     //apply rounded corners 
+                    var icon;
                     if(this.options.orientation === 'vertical'){
                         //todo icons
-                        this.element.append($('<li>').addClass('ui-carousel-cap-2 '+this.options.classCaps +' ' +this.options.classDefault).append($('<span class="ui-icon '+this.options.icons.down +'"">')));   
-                        if(this.options.roundedCaps) this.element.children('li.ui-carousel-cap-2').addClass('ui-corner-bottom');
+                        if(typeof(this.options.icons.down) === 'string'){
+                            icon = $('<span class="ui-icon '+this.options.icons.down +'">');
+                        }else{
+                            icon = this.options.icons.down; 
+                        }
                     }else if(this.options.orientation === 'horizontal'){
                         //todo icons
-                        this.element.append($('<li>').addClass('ui-carousel-cap-2 '+this.options.classCaps +' ' +this.options.classDefault).append($('<span class="ui-icon '+this.options.icons.right +'"">')));   
-                        if(this.options.roundedCaps) this.element.children('li.ui-carousel-cap-2').addClass('ui-corner-right');
-
+                        if(typeof(this.options.icons.right) === 'string'){
+                            icon = $('<span class="ui-icon '+this.options.icons.right +'">');
+                        }else{
+                            icon = this.options.icons.right; 
+                        }
                     } 
+                    this.element.append($('<li>').addClass('ui-carousel-cap-2 '+this.options.classCaps +' ' +this.options.classDefault).append(icon));   
+
                     // adding hover handler to cap 
                     this.element.children('li.ui-carousel-cap-2').hover(  $.proxy(function(eventobject){
 
@@ -155,6 +168,15 @@
                     $.proxy(function(eventobject){ 
                         this._hoverCapOut(eventobject );          
                     },this));
+                }
+                if(this.element.hasClass('ui-corner-all')){
+                    if(this.options.orientation === 'horizontal'){
+                        this.element.children('li.ui-carousel-cap-1').addClass('ui-corner-left')
+                        this.element.children('li.ui-carousel-cap-2').addClass('ui-corner-right')
+                    }else if(this.options.orientation === 'vertical'){
+                        this.element.children('li.ui-carousel-cap-1').addClass('ui-corner-top')
+                        this.element.children('li.ui-carousel-cap-2').addClass('ui-corner-bottom')
+                    }
                 }
                 // aranging caps and list 
                 this.element.children().css('float','left');
