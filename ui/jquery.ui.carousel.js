@@ -44,16 +44,16 @@
             this.refresh();  
         },
         recenter: function(){  
-         debugger;     
+            debugger;     
             this.element.find('li.'+this.options.classBase+'-item').each(function(){
-                
+
                 var h = $(this).height(),
                 w = $(this).width(),
                 ch =  $(this).children(':eq(0)').outerHeight(),         
                 cw =  $(this).children(':eq(0)').outerWidth();         
                 $(this).children(':eq(0)').css({'margin-left':(w-cw)/2,'margin-top':(h-ch)/2});
 
-
+                debugger;
 
             });
         },

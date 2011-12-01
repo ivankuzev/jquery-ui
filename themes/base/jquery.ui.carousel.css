@@ -6,7 +6,8 @@
 }   
 li.ui-carousel-item{
     float:left;
-    width:40px;
+    width:75px;  
+     height:75px;  
 }
 .ui-carousel li{
     overflow:hidden;    
@@ -18,7 +19,7 @@ li.ui-carousel-item{
 ul.ui-carousel-items{
     position:relative;
 }
-li.ui-carousel-item > a{
-    width:10%;
-display:block;  
+li.ui-carousel-item > *{
+
+   display:inline-block;  
 }

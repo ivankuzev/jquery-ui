@@ -5,38 +5,47 @@
         <meta http-equiv="Pragma" content="no-cache">
         <meta http-equiv="Cache-Control" content="no-cache">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="Lang" content="en">
+        <meta name="author" content="Ivan kuzev">
+        <meta http-equiv="Reply-to" content="@.com">
+        <meta name="description" content="default functionality for carousel">
+        <meta name="keywords" content="default,carousel">
+        <meta name="creation-date" content="01/01/2009">
+        <meta name="revisit-after" content="15 days">
+        <title>Untitled</title>
+        <link rel="stylesheet" type="text/css" href="my.css">
 
-        <title>field 2(bare)</title>
+        <title>Default functionality</title>
 
         <!-- main jquery and ui dependencies  -->
         <!--link rel="stylesheet" type="text/css" href="jquery.ui.base.css"-->
-        
-         <link rel="stylesheet" href="../../themes/base/jquery.ui.all.css">       
-    <script src="../../jquery-1.7.1.js"></script>
+
+        <link rel="stylesheet" href="../../themes/base/jquery.ui.all.css">       
+        <script src="../../jquery-1.7.1.js"></script>
 
 
 
         <!-- plugin specific dependencies  -->     
         <link rel="stylesheet" type="text/css" href="../../themes/base/jquery.ui.carousel.css">               
         <script type="text/javascript" src="../../ui/jquery.ui.widget.js"></script>       
-            <!-- the plugin -->
+        <!-- the plugin -->
         <script type="text/javascript" src="../../ui/jquery.ui.carousel.js"></script>
 
 
         <script type="text/javascript">
             $(document).ready(function(){
-               $('.sl:lt(2)').carousel({orientation:'horizontal',width:200,height:40});
+                $('.sl:lt(2)').carousel({orientation:'horizontal',width:200,height:40});
                 $('.sl:eq(2)').carousel({'click':function(event,data){debugger;alert($(data.target).text())}});
                 $('.sl:eq(3)').carousel({'height':200,'width':100});
-            $('.act1').click(function(){
-                   $('.sl:eq(1)').carousel('option','focusItem',12);
-            });
+                $('.act1').click(function(){
+                    $('.sl:eq(1)').carousel('option','focusItem',12);
+                });
             });
 
         </script>
     </head>
     <body>
-    <span class='act1'>act1</span>
+        <span class='act1'>act1</span>
         <ul class='sl'>
 
             <li><a href='#'>1</a></li> 
@@ -70,8 +79,8 @@
             <li><a href='stamps.php?category=29'>Черепи и скелети</a></li> 
             <li><a href='stamps.php?category=30'>Птици и цветя</a></li> 
         </ul>
-         <div style="height: 10px;"></div>
-        
+        <div style="height: 10px;"></div>
+
         <ul class='sl'>
 
             <li><a href='stamps.php?category=4'>Охранителни надписи</a></li> 
@@ -88,7 +97,7 @@
             <li><a href='stamps.php?category=29'>Черепи и скелети</a></li> 
             <li><a href='stamps.php?category=30'>Птици и цветя</a></li> 
         </ul>
-          <div style="height: 10px;"></div>
+        <div style="height: 10px;"></div>
         <ul class='sl'>
 
             <li><a href='stamps.php?category=4'>Охранителни надписи</a></li> 
