@@ -13,7 +13,7 @@ li.ui-carousel-item{
     overflow:hidden;    
     list-style-type:none;     
 }
-.ui-carousel li.ui-carousel-cap-1,.ui-carousel li.ui-carousel-cap-2{
+li.ui-carousel-cap-1,li.ui-carousel-cap-2{
     text-align: center;
 }
 ul.ui-carousel-items{

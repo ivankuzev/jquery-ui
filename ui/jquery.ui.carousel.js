@@ -2,30 +2,43 @@
     $.widget( "custom.carousel", {
         // default options
         options: {
+            //basic display
             orientation: 'vertical',
-            classBase:'ui-carousel',
+            classItems:'',
+            classCaps:'',
             width:'none',
-            height:'none',
-            classItemDefault:'ui-state-default',   
-            classItemOver:'ui-state-hover',
-            classItemActive:'ui-state-active',       
-            classItemFocus:'ui-state-hover',
-            classCapDefault:'ui-state-default',
-            classCapOver:'ui-state-hover',
-            uiRoundedCaps:true,
-            uiRoundedItems:false,
+            height:'none',     
+            caps:{
+                type:'standart',
+                size:20
+            },
+            step:3,
+            animation:{
+                easing:'swing',
+                speed:'show'
+            },   
+            icons:{
+                up: 'ui-icon-circle-triangle-n',
+                down: 'ui-icon-circle-triangle-s',
+                left: 'ui-icon-circle-triangle-w',
+                right: 'ui-icon-circle-triangle-e' 
+            },
+            //shoud it apply ui-corner-* classes to caps or items
+            roundedCaps:true,
+            //active state
             activeItem:null,
             focusItem:0,
-            focusStep:3,
-            caps:'standart',
-            capSize:20,
-            animationEasing:'swing',
-            animationSpeed:'fast',
+            //callbacks
             hoverItemIn:null,
             hoverItemOut:null,
             hoverCapIn:null,
             hoverCapOut:null,
-            click:null
+            click:null,
+            //for private use
+            classFocus: 'ui-state-hover',
+            classDefault: 'ui-state-default',
+            classHover: 'ui-state-hover',
+            classActive: 'ui-state-active'
 
         },  
         _setOption: function( key, value ) {
@@ -39,21 +52,18 @@
         },                     
         _create: function() {
             // adding base class to main container
-            this.element.addClass( this.options.classBase );
+            this.element.addClass('ui-carousel');
             // and reloading
             this.refresh();  
         },
         recenter: function(){  
-            debugger;     
-            this.element.find('li.'+this.options.classBase+'-item').each(function(){
+            this.element.find('li.ui-carousel-item').each(function(){
 
                 var h = $(this).height(),
                 w = $(this).width(),
                 ch =  $(this).children(':eq(0)').outerHeight(),         
                 cw =  $(this).children(':eq(0)').outerWidth();         
                 $(this).children(':eq(0)').css({'margin-left':(w-cw)/2,'margin-top':(h-ch)/2});
-
-                debugger;
 
             });
         },
@@ -69,25 +79,21 @@
             // resize the widget   
             this.element.width(this.options.width).height(this.options.height);
             // declare classBase for easier access
-            var classBase = this.options.classBase;
             // create internal li element to contain the list 
-            if(this.element.children('li.' + classBase + '-items').length ==0){
-                this.element.append($('<li class="'+classBase+'-items">').append($('<ul class="'+classBase+'-items">')));
+            if(this.element.children('li.ui-carousel-items').length ==0){
+                this.element.append($('<li class="ui-carousel-items">').append($('<ul class="ui-carousel-items">')));
             }
             // move the elements to the internal list
-            this.element.children( "li:not(."+classBase+"-items,."+classBase+"-cap-1,."+classBase+"-cap-2)" ).each( $.proxy(function( i, el ) {
+            this.element.children( "li:not(.ui-carousel-items,.ui-carousel-cap-1,.ui-carousel-cap-2)" ).each( $.proxy(function( i, el ) {
 
                 // Add the class so this option will not be processed next time the list is refreshed
-                var $el = $( el ).addClass( classBase+'-item '+this.options.classItemDefault);
+                var $el = $( el ).addClass( 'ui-carousel-item '+ this.options.classDefault +' '+this.options.itemClass);
                 // adding 100% width for verticals/height for horizontals
                 if(this.options.orientation === 'vertical'){
                     $el.width(this.options.width); 
                 }else if(this.options.orientation === 'horizontal'){
                     $el.height(this.options.height); 
                 } 
-                //add round corners
-                if(this.options.uiRoundedItems)$el.addClass('ui-corner-all');
-
                 // adding mouse hover handlers
                 $el.hover(  $.proxy(function(eventobject){
                     this._hoverItemIn( eventobject );      
@@ -100,25 +106,27 @@
                     this._onClick(eventobject);  
                 },this));
                 // move the new item to the internal list
-                this.element.find('ul.'+classBase + '-items').append($el);
+                this.element.find('ul.ui-carousel-items').append($el);
             },this));
             //checking if there shoud be any caps
-            if(this.options.caps == 'standart'){
+            if(this.options.caps.type == 'standart'){
                 //check and making caps as needed
                 // adding top/left cap
-                if(this.element.children('.'+classBase+'-cap-1').length== 0){
+                if(this.element.children('.ui-carousel-cap-1').length== 0){
                     //apply rounded corners 
                     if(this.options.orientation === 'vertical'){
-                        this.element.prepend($('<li>').addClass(classBase +'-cap-1 '+this.options.classCapDefault).append($('<span class="ui-icon ui-icon-circle-triangle-n">')));   
-                        if(this.options.uiRoundedCaps) this.element.children('li.'+classBase+'-cap-1').addClass('ui-corner-top');
+                        //todo icons
+                        this.element.prepend($('<li>').addClass('ui-carousel-cap-1 '+this.options.classCaps +' ' +this.options.classDefault).append($('<span class="ui-icon '+this.options.icons.up +'"">')));   
+                        if(this.options.roundedCaps) this.element.children('li.ui-carousel-cap-1').addClass('ui-corner-top');
 
                     }else if(this.options.orientation === 'horizontal'){
-                        this.element.prepend($('<li>').addClass(classBase +'-cap-1 '+this.options.classCapDefault).append($('<span class="ui-icon ui-icon-circle-triangle-w">')));   
-                        if(this.options.uiRoundedCaps) this.element.children('li.'+classBase+'-cap-1').addClass('ui-corner-left');
+                        //todo icons
+                        this.element.prepend($('<li>').addClass('ui-carousel-cap-1 '+this.options.classCaps +' ' +this.options.classDefault).append($('<span class="ui-icon '+this.options.icons.left +'"">')));   
+                        if(this.options.roundedCaps) this.element.children('li.ui-carousel-cap-1').addClass('ui-corner-left');
 
                     }
                     // adding hover handler to cap
-                    this.element.children('li.'+classBase+'-cap-1').hover(  $.proxy(function(eventobject){
+                    this.element.children('li.ui-carousel-cap-1').hover(  $.proxy(function(eventobject){
 
                         this._hoverCapIn(eventobject );      
                     },this), 
@@ -127,18 +135,20 @@
                     },this));
                 }
                 // adding bottom/right cap
-                if(this.element.children('.'+classBase+'-cap-2').length== 0){
+                if(this.element.children('.ui-carousel-cap-2').length== 0){
                     //apply rounded corners 
                     if(this.options.orientation === 'vertical'){
-                        this.element.append($('<li>').addClass(classBase +'-cap-2 '+this.options.classCapDefault).append($('<span class="ui-icon ui-icon-circle-triangle-s">')));   
-                        if(this.options.uiRoundedCaps) this.element.children('li.'+classBase+'-cap-2').addClass('ui-corner-bottom');
+                        //todo icons
+                        this.element.append($('<li>').addClass('ui-carousel-cap-2 '+this.options.classCaps +' ' +this.options.classDefault).append($('<span class="ui-icon '+this.options.icons.down +'"">')));   
+                        if(this.options.roundedCaps) this.element.children('li.ui-carousel-cap-2').addClass('ui-corner-bottom');
                     }else if(this.options.orientation === 'horizontal'){
-                        this.element.append($('<li>').addClass(classBase +'-cap-2 '+this.options.classCapDefault).append($('<span class="ui-icon ui-icon-circle-triangle-e">')));   
-                        if(this.options.uiRoundedCaps) this.element.children('li.'+classBase+'-cap-2').addClass('ui-corner-right');
+                        //todo icons
+                        this.element.append($('<li>').addClass('ui-carousel-cap-2 '+this.options.classCaps +' ' +this.options.classDefault).append($('<span class="ui-icon '+this.options.icons.right +'"">')));   
+                        if(this.options.roundedCaps) this.element.children('li.ui-carousel-cap-2').addClass('ui-corner-right');
 
                     } 
                     // adding hover handler to cap 
-                    this.element.children('li.'+classBase+'-cap-2').hover(  $.proxy(function(eventobject){
+                    this.element.children('li.ui-carousel-cap-2').hover(  $.proxy(function(eventobject){
 
                         this._hoverCapIn(eventobject );      
                     },this), 
@@ -149,65 +159,65 @@
                 // aranging caps and list 
                 this.element.children().css('float','left');
                 if(this.options.orientation === 'vertical'){   
-                    this.element.children('li.'+classBase+'-items').css({'width':this.options.width,'height':this.options.height-(this.options.capSize*2)});
+                    this.element.children('li.ui-carousel-items').css({'width':this.options.width,'height':this.options.height-(this.options.caps.size*2)});
                     var sumOfChildrenHeight = 0; 
-                    this.element.find('ul.'+classBase+'-items').children().each(function() 
+                    this.element.find('ul.ui-carousel-items').children().each(function() 
                     { 
                         sumOfChildrenHeight += $(this).outerHeight(); 
                     });
-                    this.element.find('ul.'+classBase+'-items').width(this.options.width).height(sumOfChildrenHeight);
+                    this.element.find('ul.ui-carousel-items').width(this.options.width).height(sumOfChildrenHeight);
                     // getting content height from known outerHeight;
-                    var capHeight = this.options.capSize 
-                    -parseFloat(this.element.children('li.'+classBase+'-cap-1').css('border-top-width'))
-                    -parseFloat(this.element.children('li.'+classBase+'-cap-1').css('border-bottom-width'))
-                    -parseFloat(this.element.children('li.'+classBase+'-cap-1').css('padding-top'))
-                    -parseFloat(this.element.children('li.'+classBase+'-cap-1').css('padding-bottom'));
+                    var capHeight = this.options.caps.size 
+                    -parseFloat(this.element.children('li.ui-carousel-cap-1').css('border-top-width'))
+                    -parseFloat(this.element.children('li.ui-carousel-cap-1').css('border-bottom-width'))
+                    -parseFloat(this.element.children('li.ui-carousel-cap-1').css('padding-top'))
+                    -parseFloat(this.element.children('li.ui-carousel-cap-1').css('padding-bottom'));
                     // getting content width from known outerWidth; 
                     var capWidth = this.options.width 
-                    -parseFloat(this.element.children('li.'+classBase+'-cap-1').css('border-left-width'))
-                    -parseFloat(this.element.children('li.'+classBase+'-cap-1').css('border-right-width'))
-                    -parseFloat(this.element.children('li.'+classBase+'-cap-1').css('padding-left'))
-                    -parseFloat(this.element.children('li.'+classBase+'-cap-1').css('padding-right'));
+                    -parseFloat(this.element.children('li.ui-carousel-cap-1').css('border-left-width'))
+                    -parseFloat(this.element.children('li.ui-carousel-cap-1').css('border-right-width'))
+                    -parseFloat(this.element.children('li.ui-carousel-cap-1').css('padding-left'))
+                    -parseFloat(this.element.children('li.ui-carousel-cap-1').css('padding-right'));
 
-                    this.element.children('li.'+classBase+'-cap-1,li.'+classBase+'-cap-2').height(capHeight).width(capWidth);
+                    this.element.children('li.ui-carousel-cap-1,li.ui-carousel-cap-2').height(capHeight).width(capWidth);
                 }else if(this.options.orientation === 'horizontal'){
-                    this.element.children('li.'+classBase+'-items').css({'width':this.options.width-(this.options.capSize*2),'height':this.options.height});
+                    this.element.children('li.ui-carousel-items').css({'width':this.options.width-(this.options.caps.size*2),'height':this.options.height});
                     var sumOfChildrenWidth = 0; 
-                    this.element.find('ul.'+classBase+'-items').children().each(function() 
+                    this.element.find('ul.ui-carousel-items').children().each(function() 
                     { 
                         sumOfChildrenWidth += $(this).outerWidth(); 
                     });
-                    this.element.find('ul.'+classBase+'-items').height(this.options.height).width(sumOfChildrenWidth);
+                    this.element.find('ul.ui-carousel-items').height(this.options.height).width(sumOfChildrenWidth);
                     // getting content height from known outerHeight;
                     var capHeight = this.options.height 
-                    -parseFloat(this.element.children('li.'+classBase+'-cap-1').css('border-top-width'))
-                    -parseFloat(this.element.children('li.'+classBase+'-cap-1').css('border-bottom-width'))
-                    -parseFloat(this.element.children('li.'+classBase+'-cap-1').css('padding-top'))
-                    -parseFloat(this.element.children('li.'+classBase+'-cap-1').css('padding-bottom'));
+                    -parseFloat(this.element.children('li.ui-carousel-cap-1').css('border-top-width'))
+                    -parseFloat(this.element.children('li.ui-carousel-cap-1').css('border-bottom-width'))
+                    -parseFloat(this.element.children('li.ui-carousel-cap-1').css('padding-top'))
+                    -parseFloat(this.element.children('li.ui-carousel-cap-1').css('padding-bottom'));
                     // getting content width from known outerWidth; 
-                    var capWidth = this.options.capSize 
-                    -parseFloat(this.element.children('li.'+classBase+'-cap-1').css('border-left-width'))
-                    -parseFloat(this.element.children('li.'+classBase+'-cap-1').css('border-right-width'))
-                    -parseFloat(this.element.children('li.'+classBase+'-cap-1').css('padding-left'))
-                    -parseFloat(this.element.children('li.'+classBase+'-cap-1').css('padding-right'));
+                    var capWidth = this.options.caps.size 
+                    -parseFloat(this.element.children('li.ui-carousel-cap-1').css('border-left-width'))
+                    -parseFloat(this.element.children('li.ui-carousel-cap-1').css('border-right-width'))
+                    -parseFloat(this.element.children('li.ui-carousel-cap-1').css('padding-left'))
+                    -parseFloat(this.element.children('li.ui-carousel-cap-1').css('padding-right'));
 
-                    this.element.children('li.'+classBase+'-cap-1,li.'+classBase+'-cap-2').height(capHeight).width(capWidth); 
+                    this.element.children('li.ui-carousel-cap-1,li.ui-carousel-cap-2').height(capHeight).width(capWidth); 
                 }
                 // centering the icon on cap1
-                var marginX = (this.element.children('li.'+classBase+'-cap-1').width()-this.element.children('li.'+classBase+'-cap-1').children('span').outerWidth())/2; 
-                var marginY =(this.element.children('li.'+classBase+'-cap-1').height()-this.element.children('li.'+classBase+'-cap-1').children('span').outerHeight())/2; 
-                this.element.children('li.'+classBase+'-cap-1').children('span').css({'margin-top':marginY,'margin-left':marginX});
+                var marginX = (this.element.children('li.ui-carousel-cap-1').width()-this.element.children('li.ui-carousel-cap-1').children('span').outerWidth())/2; 
+                var marginY =(this.element.children('li.ui-carousel-cap-1').height()-this.element.children('li.ui-carousel-cap-1').children('span').outerHeight())/2; 
+                this.element.children('li.ui-carousel-cap-1').children('span').css({'margin-top':marginY,'margin-left':marginX});
 
                 // centering the icon on cap2
-                var marginX = (this.element.children('li.'+classBase+'-cap-2').width()-this.element.children('li.'+classBase+'-cap-2').children('span').outerWidth())/2; 
-                var marginY =(this.element.children('li.'+classBase+'-cap-2').height()-this.element.children('li.'+classBase+'-cap-2').children('span').outerHeight())/2; 
-                this.element.children('li.'+classBase+'-cap-2').children('span').css({'margin-top':marginY,'margin-left':marginX});
+                var marginX = (this.element.children('li.ui-carousel-cap-2').width()-this.element.children('li.ui-carousel-cap-2').children('span').outerWidth())/2; 
+                var marginY =(this.element.children('li.ui-carousel-cap-2').height()-this.element.children('li.ui-carousel-cap-2').children('span').outerHeight())/2; 
+                this.element.children('li.ui-carousel-cap-2').children('span').css({'margin-top':marginY,'margin-left':marginX});
 
                 //adding click handler to caps
-                this.element.children('li.'+classBase+'-cap-1').click(  $.proxy(function(eventobject){
+                this.element.children('li.ui-carousel-cap-1').click(  $.proxy(function(eventobject){
                     this._viewback(eventobject);      
                 },this));
-                this.element.children('li.'+classBase+'-cap-2').click(  $.proxy(function(eventobject){
+                this.element.children('li.ui-carousel-cap-2').click(  $.proxy(function(eventobject){
                     this._viewforward(eventobject);      
                 },this));
             }
@@ -218,41 +228,41 @@
 
         },
         _viewback:function(event){ 
-            this.options.focusItem-=this.options.focusStep;        
+            this.options.focusItem-=this.options.step;        
             if(this.options.focusItem < 0)this.options.focusItem =0;
             this._setview();
 
         },
         _viewforward:function(event){ 
-            this.options.focusItem+=this.options.focusStep;
-            if(this.options.focusItem >  (this.element.find('ul.'+this.options.classBase+'-items').children().length-1)) this.options.focusItem =this.element.find('ul.'+this.options.classBase+'-items').children().length-1 ;
+            this.options.focusItem+=this.options.step;
+            if(this.options.focusItem >  (this.element.find('ul.ui-carousel-items').children().length-1)) this.options.focusItem =this.element.find('ul.ui-carousel-items').children().length-1 ;
             this._setview();     
         },
         //the actual hover methods
         _setview:function(){  
-            this.element.find('ul.'+this.options.classBase+'-items').children().removeClass(this.options.classItemFocus).addClass(this.options.classItemDefault);
-            this.element.find('ul.'+this.options.classBase+'-items').children(':eq('+this.options.focusItem+')').removeClass(this.options.classItemDefault).addClass(this.options.classItemFocus);
+            this.element.find('ul.ui-carousel-items').children().removeClass(this.options.classFocus).addClass(this.options.classDefault);
+            this.element.find('ul.ui-carousel-items').children(':eq('+this.options.focusItem+')').removeClass(this.options.classDefault).addClass(this.options.classFocus);
             if(this.options.orientation ==='vertical'){
-                var heightContainer=  this.element.find('li.'+this.options.classBase+'-items').height();
-                var heightList=  this.element.find('ul.'+this.options.classBase+'-items').outerHeight();
+                var heightContainer=  this.element.find('li.ui-carousel-items').height();
+                var heightList=  this.element.find('ul.ui-carousel-items').outerHeight();
 
-                var topFocusItem=    this.element.find('ul.'+this.options.classBase+'-items').children(':eq('+this.options.focusItem+')').position().top;
-                var heightFocusItem =  this.element.find('ul.'+this.options.classBase+'-items').children(':eq('+this.options.focusItem+')').outerHeight(); 
+                var topFocusItem=    this.element.find('ul.ui-carousel-items').children(':eq('+this.options.focusItem+')').position().top;
+                var heightFocusItem =  this.element.find('ul.ui-carousel-items').children(':eq('+this.options.focusItem+')').outerHeight(); 
                 var animationTarget = -(topFocusItem+(heightFocusItem/2))+(heightContainer/2);
                 if(animationTarget > 0)  animationTarget = 0;
                 if(animationTarget < -(heightList-heightContainer))animationTarget = -(heightList-heightContainer);    
 
-                this.element.find('ul.'+this.options.classBase+'-items').animate({'top':animationTarget},this.options.animationSpeed,this.options.animationEasing);
+                this.element.find('ul.ui-carousel-items').animate({'top':animationTarget},this.options.animation.speed,this.options.animation.easing);
             }else if(this.options.orientation ==='horizontal'){
-                var widthContainer=  this.element.find('li.'+this.options.classBase+'-items').width();
-                var widthList=  this.element.find('ul.'+this.options.classBase+'-items').outerWidth();
+                var widthContainer=  this.element.find('li.ui-carousel-items').width();
+                var widthList=  this.element.find('ul.ui-carousel-items').outerWidth();
 
-                var leftFocusItem=    this.element.find('ul.'+this.options.classBase+'-items').children(':eq('+this.options.focusItem+')').position().left;
-                var widthFocusItem =  this.element.find('ul.'+this.options.classBase+'-items').children(':eq('+this.options.focusItem+')').outerWidth(); 
+                var leftFocusItem=    this.element.find('ul.ui-carousel-items').children(':eq('+this.options.focusItem+')').position().left;
+                var widthFocusItem =  this.element.find('ul.ui-carousel-items').children(':eq('+this.options.focusItem+')').outerWidth(); 
                 var animationTarget = -(leftFocusItem+(widthFocusItem/2))+(widthContainer/2);
                 if(animationTarget > 0)  animationTarget = 0;
                 if(animationTarget < -(widthList-widthContainer))animationTarget = -(widthList-widthContainer);    
-                this.element.find('ul.'+this.options.classBase+'-items').animate({'left':animationTarget},this.options.animationSpeed,this.options.animationEasing);
+                this.element.find('ul.ui-carousel-items').animate({'left':animationTarget},this.options.animation.speed,this.options.animation.easing);
 
             }
             this.recenter();
@@ -260,36 +270,36 @@
         _onClick:function(event){
 
             var target = $(event.currentTarget);
-            target.siblings().removeClass(this.options.classItemActive).addClass(this.options.classItemDefault);
-            target.removeClass(this.options.classItemDefault).addClass(this.options.classItemActive);
+            target.siblings().removeClass(this.options.classActive).addClass(this.options.classDefault);
+            target.removeClass(this.options.classDefault).addClass(this.options.classActive);
             this.options.focusItem = target.index();
             this._setview();     
             this._trigger( "click", null,  {'target':target,'index':target.index()} );      
         },
         _hoverItemIn:function(event){    
             var target = $(event.currentTarget);     
-            $(target).removeClass(this.options.classItemDefault);               
-            $(target).addClass(this.options.classItemOver);                         
+            $(target).removeClass(this.options.classDefault);               
+            $(target).addClass(this.options.classHover);                         
 
             this._trigger( "hoverItemIn", null,  {'target':target,'index':target.index()} );      
 
         },
         _hoverItemOut:function(event){           
             var target = $(event.currentTarget);     
-            $(target).removeClass(this.options.classItemOver);               
-            $(target).addClass(this.options.classItemDefault);                         
+            $(target).removeClass(this.options.classHover);               
+            $(target).addClass(this.options.classDefault);                         
             this._trigger( "hoverItemOut", null,  {'target':target,'index':target.index()} );  
         },
         _hoverCapIn:function(event){    
             var target = $(event.currentTarget);     
-            $(target).removeClass(this.options.classCapDefault);               
-            $(target).addClass(this.options.classCapOver);                         
+            $(target).removeClass(this.options.classDefault);               
+            $(target).addClass(this.options.classHover);                         
             this._trigger( "hoverCapIn", null,  {'target':target} );      
         },
         _hoverCapOut:function(event){           
             var target = $(event.currentTarget);     
-            $(target).removeClass(this.options.classCapOver);               
-            $(target).addClass(this.options.classCapDefault);                         
+            $(target).removeClass(this.options.classHover);               
+            $(target).addClass(this.options.classDefault);                         
             this._trigger( "hoverCapOut", null,  {'target':target} );      
 
         }

@@ -35,7 +35,7 @@
         <script type="text/javascript">
             $(document).ready(function(){
                 $('.sl:lt(2)').carousel({orientation:'horizontal',width:200,height:40});
-                $('.sl:eq(2)').carousel({'click':function(event,data){debugger;alert($(data.target).text())}});
+                $('.sl:eq(2)').carousel({'click':function(event,data){alert($(data.target).text())}});
                 $('.sl:eq(3)').carousel({'height':200,'width':100});
                 $('.act1').click(function(){
                     $('.sl:eq(1)').carousel('option','focusItem',12);
