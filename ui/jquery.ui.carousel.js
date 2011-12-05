@@ -167,13 +167,7 @@
                     });
                     this.element.find('ul.ui-carousel-items').width(this.element.width()).height(sumOfChildrenHeight);
                     // getting content width from known outerWidth; 
-                    var capWidth = this.element.width() 
-                    -parseFloat(this.element.children('div.ui-carousel-end-1').css('border-left-width'))
-                    -parseFloat(this.element.children('div.ui-carousel-end-1').css('border-right-width'))
-                    -parseFloat(this.element.children('div.ui-carousel-end-1').css('padding-left'))
-                    -parseFloat(this.element.children('div.ui-carousel-end-1').css('padding-right'));
-
-                    this.element.children('div.ui-carousel-end-1,div.ui-carousel-end-2').width(capWidth);
+                     this._setOuterSize(this.element.children('div.ui-carousel-end-1,div.ui-carousel-end-2'),null,this.element.width());
                 }else if(this.options.orientation === 'horizontal'){
                     this.element.children('div.ui-carousel-items').css({'width':this.element.width()-(this.element.children('div.ui-carousel-end-1').outerWidth()*2),'height':this.element.height});
                     var sumOfChildrenWidth = 0; 
@@ -183,13 +177,8 @@
                     });
                     this.element.find('ul.ui-carousel-items').height(this.element.height()).width(sumOfChildrenWidth);
                     // getting content height from known outerHeight;
-                    var capHeight = this.element.height() 
-                    -parseFloat(this.element.children('div.ui-carousel-end-1').css('border-top-width'))
-                    -parseFloat(this.element.children('div.ui-carousel-end-1').css('border-bottom-width'))
-                    -parseFloat(this.element.children('div.ui-carousel-end-1').css('padding-top'))
-                    -parseFloat(this.element.children('div.ui-carousel-end-1').css('padding-bottom'));
-                    // getting content width from known outerWidth; 
-                    this.element.children('div.ui-carousel-end-1,div.ui-carousel-end-2').height(capHeight); 
+
+                    this._setOuterSize(this.element.children('div.ui-carousel-end-1,div.ui-carousel-end-2'),null,this.element.height());
                 }
                 // centering the icon on end 1
                 var marginX = (this.element.children('div.ui-carousel-end-1').width()-this.element.children('div.ui-carousel-end-1').children().outerWidth())/2; 
