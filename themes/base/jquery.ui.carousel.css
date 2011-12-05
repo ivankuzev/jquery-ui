@@ -7,8 +7,9 @@
 }   
 li.ui-carousel-item{
     float:left;
-    width:75px;  
-    height:75px;  
+    width:80px;  
+    height:80px;  
+    cursor:pointer;
 }
 .ui-carousel > div{
     float:left;

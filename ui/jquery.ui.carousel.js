@@ -60,6 +60,14 @@
             // and reloading
             this.refresh();  
         },
+        //setting outer width
+        _setOuterSize:function(object,width,height){
+            if (width === null)width = object.outerWidth();
+            if (height === null)height = object.outerHeight();
+            var outerHeightAddition = object.outerHeight() - object.height();   
+            var outerWidthAddition = object.outerWidth() - object.width();  
+            object.height(height-outerHeightAddition).width(width-outerWidthAddition);
+        },
         reCenter: function(){  
             this.element.find('li.ui-carousel-item').each(function(){
 
@@ -207,7 +215,7 @@
             //todo
         },
         _reOrientate:function(){     
-             if(this.options.orientation === ''){
+            if(this.options.orientation === ''){
                 if(this.element.width() >= this.element.height()){
                     this.options.orientation = 'horizontal';
                 }else{
@@ -215,10 +223,11 @@
                 }
             }
             if(this.options.orientation === 'vertical'){
-                this.element.find('li.ui-carousel-item').width(this.element.width());    //todo maybe later for outer height.width function
+                this._setOuterSize(this.element.find('li.ui-carousel-item'),this.element.width(),null);
                 this.element.removeClass('ui-carousel-horizontal').addClass('ui-carousel-vertical');   
             }else if(this.options.orientation === 'horizontal'){
-                this.element.find('li.ui-carousel-item').height(this.element.height()); 
+
+                this._setOuterSize(this.element.find('li.ui-carousel-item'),null,this.element.height());
                 this.element.removeClass('ui-carousel-vertical').addClass('ui-carousel-horizontal'); 
             } 
             this._refreshNavigation();
