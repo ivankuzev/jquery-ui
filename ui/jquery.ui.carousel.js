@@ -167,7 +167,7 @@
                     });
                     this.element.find('ul.ui-carousel-items').width(this.element.width()).height(sumOfChildrenHeight);
                     // getting content width from known outerWidth; 
-                     this._setOuterSize(this.element.children('div.ui-carousel-end-1,div.ui-carousel-end-2'),null,this.element.width());
+                     this._setOuterSize(this.element.children('div.ui-carousel-end-1,div.ui-carousel-end-2'),this.element.width(),null);
                 }else if(this.options.orientation === 'horizontal'){
                     this.element.children('div.ui-carousel-items').css({'width':this.element.width()-(this.element.children('div.ui-carousel-end-1').outerWidth()*2),'height':this.element.height});
                     var sumOfChildrenWidth = 0; 
