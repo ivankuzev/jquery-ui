@@ -2,24 +2,30 @@
     margin: 0px;   
     padding: 0px; 
     border: none;  
-    outline: 0px;  
+    outline: 0px;   
+    list-style-type:none;  
 }   
 li.ui-carousel-item{
     float:left;
     width:75px;  
-     height:75px;  
+    height:75px;  
 }
-.ui-carousel li{
+.ui-carousel > div{
+    float:left;
     overflow:hidden;    
-    list-style-type:none;     
+
 }
-li.ui-carousel-cap-1,li.ui-carousel-cap-2{
-    text-align: center;
+.ui-carousel-horizontal > div.ui-carousel-end-1,.ui-carousel-horizontal > div.ui-carousel-end-2{
+    width:22px;
+}
+.ui-carousel-vertical > div.ui-carousel-end-1,.ui-carousel-vertical > div.ui-carousel-end-2{
+    height:22px;  
 }
 ul.ui-carousel-items{
     position:relative;
 }
 li.ui-carousel-item > *{
 
-   display:inline-block;  
+    display:inline-block;  
 }
+/*ui-carousel-disposable for helping in the garbage collection*/

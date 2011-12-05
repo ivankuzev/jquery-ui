@@ -27,8 +27,8 @@
 
         <script type="text/javascript">
             $(document).ready(function(){    
-                $('.sl:eq(0)').carousel({width:200,height:300});   
-                $('.sl:eq(1)').carousel({'orientation':'horizontal','width':300,'height':100});   
+                $('.sl:eq(0)').carousel();   
+                $('.sl:eq(1)').carousel();   
             });
         </script> 
         <style>
@@ -40,7 +40,7 @@
         </style>
     </head> 
     <body>
-        <ul class='sl ui-corner-all'>
+        <ul class='sl ui-corner-all' style="width: 100px;height:300px">
 
             <li><a href='#'><img src="http://static.flickr.com/66/199481236_dc98b5abb3_s.jpg" width="75" height="75" alt="none">Alpha</a></li> 
             <li><a href='#'><img src="http://static.flickr.com/75/199481072_b4a0d09597_s.jpg" width="75" height="75" alt="none">Beta</a></li> 
@@ -56,7 +56,7 @@
             <li><a href='#'><img src="http://static.flickr.com/66/199481236_dc98b5abb3_s.jpg" width="75" height="75" alt="none">Sigma</a></li> 
             <li><a href='#'><img src="http://static.flickr.com/66/199481236_dc98b5abb3_s.jpg" width="75" height="75" alt="none">Sigma</a></li> 
         </ul>
-        <ul style="margin-top: 20px;" class='sl ui-corner-all'>
+        <ul style="margin-top: 20px;width:200px;height:200px;" class='sl ui-corner-all'>
 
             <li><a href='#'><img src="http://static.flickr.com/66/199481236_dc98b5abb3_s.jpg" width="75" height="75" alt="none">Alpha</a></li> 
             <li><a href='#'><img src="http://static.flickr.com/75/199481072_b4a0d09597_s.jpg" width="75" height="75" alt="none">Beta</a></li> 
