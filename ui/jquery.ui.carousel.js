@@ -167,7 +167,7 @@
                     });
                     this.element.find('ul.ui-carousel-items').width(this.element.width()).height(sumOfChildrenHeight);
                     // getting content width from known outerWidth; 
-                     this._setOuterSize(this.element.children('div.ui-carousel-end-1,div.ui-carousel-end-2'),this.element.width(),null);
+                    this._setOuterSize(this.element.children('div.ui-carousel-end-1,div.ui-carousel-end-2'),this.element.width(),null);
                 }else if(this.options.orientation === 'horizontal'){
                     this.element.children('div.ui-carousel-items').css({'width':this.element.width()-(this.element.children('div.ui-carousel-end-1').outerWidth()*2),'height':this.element.height});
                     var sumOfChildrenWidth = 0; 
@@ -197,7 +197,25 @@
                 this.element.children('div.ui-carousel-end-2').click(  $.proxy(function(eventobject){
                     this._viewforward(eventobject);      
                 },this));
-            }
+            }else if(this.options.navigation.ends === 'none'){
+                this.element.children('div.ui-carousel-end-1,div.ui-carousel-end-2').remove();
+                this.element.children('div.ui-carousel-items').css({'width':this.element.width(),'height':this.element.height()});
+                if(this.options.orientation === 'vertical'){   
+                    var sumOfChildrenHeight = 0; 
+                    this.element.find('li.ui-carousel-item').each(function() 
+                    { 
+                        sumOfChildrenHeight += $(this).outerHeight(); 
+                    });
+                    this.element.find('ul.ui-carousel-items').width(this.element.width()).height(sumOfChildrenHeight);
+                }else if(this.options.orientation === 'horizontal'){
+                    var sumOfChildrenWidth = 0; 
+                    this.element.find('li.ui-carousel-item').each(function() 
+                    { 
+                        sumOfChildrenWidth += $(this).outerWidth(); 
+                    });
+                    this.element.find('ul.ui-carousel-items').height(this.element.height()).width(sumOfChildrenWidth);
+                } 
+         }
 
         },
         _refreshNavigationSides:function(){
