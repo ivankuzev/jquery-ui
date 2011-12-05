@@ -8,9 +8,9 @@
             classCaps:'',
             width:'none',
             height:'none',     
-            caps:{
-                type:'standart',
-                size:20
+            navigation:{
+                ends:'standart',
+                endSize:20
             },
             step:3,
             animation:{
@@ -23,7 +23,7 @@
                 left: 'ui-icon-circle-triangle-w',
                 right: 'ui-icon-circle-triangle-e' 
             },
-           //active state
+            //active state
             activeItem:null,
             focusItem:0,
             //callbacks
@@ -36,7 +36,8 @@
             classFocus: 'ui-state-hover',
             classDefault: 'ui-state-default',
             classHover: 'ui-state-hover',
-            classActive: 'ui-state-active'
+            classActive: 'ui-state-active',
+            classDisabled: 'ui-state-disabled'
 
         },  
         _setOption: function( key, value ) {
@@ -106,9 +107,9 @@
                 // move the new item to the internal list
                 this.element.find('ul.ui-carousel-items').append($el);
             },this));
-            //checking if there shoud be any caps
-            if(this.options.caps.type == 'standart'){
-                //check and making caps as needed
+            //checking if there shoud be any ends
+            if(this.options.navigation.ends == 'standart'){
+                //check and making ends as needed
                 // adding top/left cap
                 if(this.element.children('.ui-carousel-cap-1').length== 0){
                     //apply rounded corners 
@@ -178,10 +179,10 @@
                         this.element.children('li.ui-carousel-cap-2').addClass('ui-corner-bottom')
                     }
                 }
-                // aranging caps and list 
+                // aranging ends and list 
                 this.element.children().css('float','left');
                 if(this.options.orientation === 'vertical'){   
-                    this.element.children('li.ui-carousel-items').css({'width':this.options.width,'height':this.options.height-(this.options.caps.size*2)});
+                    this.element.children('li.ui-carousel-items').css({'width':this.options.width,'height':this.options.height-(this.options.navigation.endSize*2)});
                     var sumOfChildrenHeight = 0; 
                     this.element.find('ul.ui-carousel-items').children().each(function() 
                     { 
@@ -189,7 +190,7 @@
                     });
                     this.element.find('ul.ui-carousel-items').width(this.options.width).height(sumOfChildrenHeight);
                     // getting content height from known outerHeight;
-                    var capHeight = this.options.caps.size 
+                    var capHeight = this.options.navigation.endSize 
                     -parseFloat(this.element.children('li.ui-carousel-cap-1').css('border-top-width'))
                     -parseFloat(this.element.children('li.ui-carousel-cap-1').css('border-bottom-width'))
                     -parseFloat(this.element.children('li.ui-carousel-cap-1').css('padding-top'))
@@ -203,7 +204,7 @@
 
                     this.element.children('li.ui-carousel-cap-1,li.ui-carousel-cap-2').height(capHeight).width(capWidth);
                 }else if(this.options.orientation === 'horizontal'){
-                    this.element.children('li.ui-carousel-items').css({'width':this.options.width-(this.options.caps.size*2),'height':this.options.height});
+                    this.element.children('li.ui-carousel-items').css({'width':this.options.width-(this.options.navigation.endSize*2),'height':this.options.height});
                     var sumOfChildrenWidth = 0; 
                     this.element.find('ul.ui-carousel-items').children().each(function() 
                     { 
@@ -217,7 +218,7 @@
                     -parseFloat(this.element.children('li.ui-carousel-cap-1').css('padding-top'))
                     -parseFloat(this.element.children('li.ui-carousel-cap-1').css('padding-bottom'));
                     // getting content width from known outerWidth; 
-                    var capWidth = this.options.caps.size 
+                    var capWidth = this.options.navigation.endSize 
                     -parseFloat(this.element.children('li.ui-carousel-cap-1').css('border-left-width'))
                     -parseFloat(this.element.children('li.ui-carousel-cap-1').css('border-right-width'))
                     -parseFloat(this.element.children('li.ui-carousel-cap-1').css('padding-left'))
@@ -287,6 +288,17 @@
                 this.element.find('ul.ui-carousel-items').animate({'left':animationTarget},this.options.animation.speed,this.options.animation.easing);
 
             }
+            if(this.options.navigation.ends === 'standart'){
+                this.element.children('li.ui-carousel-cap-1,li.ui-carousel-cap-2').removeClass(this.options.classDisabled);
+                if(this.options.focusItem ===  (this.element.find('ul.ui-carousel-items').children().length-1)){
+                    this.element.children('li.ui-carousel-cap-2').addClass(this.options.classDisabled);
+                }
+                if(this.options.focusItem === 0){
+                    this.element.children('li.ui-carousel-cap-1').addClass(this.options.classDisabled);
+
+                }
+            }
+
             this.recenter();
         },
         _onClick:function(event){
